@@ -13,27 +13,32 @@ export const kOpenXiaoAIConfig: OpenXiaoAIConfig = {
      * - ❌ https://api.openai.com/v1/（最后多了一个 /
      * - ❌ https://api.openai.com/v1/chat/completions（不需要加 /chat/completions）
      */
-    baseURL: "https://api.openai.com/v1",
+    baseURL: "http://192.168.100.149:1234/v1",
+
     /**
      * API 密钥
      */
-    apiKey: "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    apiKey: "lm-studio",
     /**
      * 模型名称
      */
-    model: "gpt-4.1-mini",
+    model: "qwen/qwen3-30b-a3b-2507",
   },
   prompt: {
     /**
      * 系统提示词，如需关闭可设置为：''（空字符串）
      */
-    system: "你是一个智能助手，请根据用户的问题给出回答。",
+    system: [
+      "你运行在本地 LM Studio 上，为小爱音箱用户提供语音回答。",
+      "请使用自然、口语化的中文，避免 Markdown 或复杂排版。",
+      "遇到代码、链接或表格时，用简明描述概括重点，方便语音播报。",
+    ].join("\n"),
   },
   context: {
     /**
      * 每次对话携带的最大历史消息数（如需关闭可设置为：0）
      */
-    historyMaxLength: 10,
+    historyMaxLength: 30,
   },
   /**
    * 只回答以下关键词开头的消息：
