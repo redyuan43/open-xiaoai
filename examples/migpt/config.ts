@@ -51,6 +51,12 @@ export const kOpenXiaoAIConfig: OpenXiaoAIConfig = {
    * 自定义消息回复
    */
   async onMessage(engine, { text }) {
+    if (text === "停止" || text === "停止播放") {
+      await engine.speaker.setPlaying(false);
+      await engine.speaker.abortXiaoAI();
+      return { handled: true };
+    }
+
     if (text === "测试播放文字") {
       return { text: "你好，很高兴认识你！" };
     }

@@ -1,3 +1,4 @@
+import { sleep } from "@mi-gpt/utils";
 import { jsonEncode } from "@mi-gpt/utils/parse";
 import { RustServer } from "./open-xiaoai.js";
 import type { ISpeaker } from "@mi-gpt/engine/base";
@@ -146,11 +147,18 @@ class SpeakerManager implements ISpeaker {
    *
    * 注意：重启需要大约 1-2s 的时间，在此期间无法使用小爱音箱自带的 TTS 服务
    */
-  async abortXiaoAI() {
+  async abortXiaoAI(options?: { waitForRestart?: boolean }) {
+    const { waitForRestart = true } = options ?? {};
     const res = await this.runShell(
       "/etc/init.d/mico_aivs_lab restart >/dev/null 2>&1"
     );
-    return res?.exit_code === 0;
+    if (res?.exit_code === 0) {
+      if (waitForRestart) {
+        await sleep(2000);
+      }
+      return true;
+    }
+    return false;
   }
 
   /**
